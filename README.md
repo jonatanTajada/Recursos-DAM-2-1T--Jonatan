@@ -30,8 +30,6 @@ Material de apoyo, teoría, ejercicios, exámenes y prácticas reales de las asi
 
 ## ⚠️ Aviso
 
-- **Todos los materiales son de apoyo y consulta, no sustituyen el trabajo personal ni las explicaciones de clase.**
-- **Recomendado solo para uso educativo y repaso.**
 - Algunos archivos grandes (librerías, recursos, etc.) pueden no estar incluidos por limitaciones de GitHub.
 
 ---
@@ -39,8 +37,15 @@ Material de apoyo, teoría, ejercicios, exámenes y prácticas reales de las asi
 ## ✍️ Autor
 
 **Jonatan Tajada**  
-Estudiante de 2º DAM | [LinkedIn](https://www.linkedin.com/in/jonatanTajada/)  
-GitHub: [@jonatanTajada](https://github.com/jonatanTajada)
+
+## 📲 Contacto y más recursos
+
+- [Perfil de LinkedIn](https://www.linkedin.com/in/jonatantr/)  
+- [Repositorio de Primer Año](https://github.com/jonatanTajada/Recursos-DAM-1--Jonatan)
+
+---
+
+#### ⭐ Si te resulta útil, no olvides dejar una estrella al repo.
 
 ---
 
