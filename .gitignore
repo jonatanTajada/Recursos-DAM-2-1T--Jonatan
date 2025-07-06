@@ -1,0 +1,36 @@
+# Archivos y carpetas de Eclipse
+.classpath
+.project
+.settings/
+.metadata/
+bin/
+*.iml
+
+# Directorios de compilación Java/Maven/Gradle
+target/
+build/
+out/
+
+# Ficheros del sistema
+*.log
+*.tmp
+
+# Dependencias descargadas
+*.war
+*.ear
+
+# Archivos específicos de OS
+.DS_Store
+Thumbs.db
+
+# Archivos y carpetas de pruebas temporales
+*.swp
+*.swo
+
+# Otros
+.idea/
+.vscode/
+
+# Ignorar archivos grandes
+desarrolloDeInterfaces/formik-6.3.0-windows.zip
+desarrolloDeInterfaces/javafx-sdk-23.0.1/bin/jfxwebkit.dll

@@ -1,0 +1,6 @@
+jdbc
+mysql
+tienda
+localhost
+timezone
+ssl

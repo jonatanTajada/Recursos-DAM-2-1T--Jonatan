@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~ Hibernate Search, full-text search for your domain model
+ ~
+ ~ License: GNU Lesser General Public License (LGPL), version 2.1 or later
+ ~ See the lgpl.txt file in the root directory or <http://www.gnu.org/licenses/lgpl-2.1.html>.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>hibernate-search-parent</artifactId>
+        <groupId>org.hibernate</groupId>
+        <version>5.8.0.Final</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>hibernate-search-integrationtest-wildfly</artifactId>
+
+    <name>Hibernate Search Wildfly Integration Tests</name>
+    <description>Hibernate Search integration tests for Wildfly</description>
+
+    <properties>
+        <!--
+        we disable the enforcer plugin for this module as it is not possible to maintain the dependency convergence
+        here due to dependency conflicts with specific versions of WildFly
+        -->
+        <enforcer.skip>true</enforcer.skip>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <byteman.agent.path>${org.jboss.byteman:byteman:jar}</byteman.agent.path>
+        <byteman.script.path>${basedir}${file.separator}src${file.separator}test${file.separator}resources${file.separator}disablejpadapters.btm</byteman.script.path>
+        <test.hibernate.search.module.slot>main</test.hibernate.search.module.slot>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- We override the version of ShrinkWrap Maven Resolver from Arquillian BOM:
+             this section must be declared before the Arquillian bom import -->
+            <dependency>
+                <groupId>org.jboss.shrinkwrap.resolver</groupId>
+                <artifactId>shrinkwrap-resolver-bom</artifactId>
+                <version>${shrinkwrapResolverVersion}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- Imports compatible versions for each Arquillian module -->
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>${arquillianVersion}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- Hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-orm</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-testing</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-backend-jms</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-elasticsearch</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Take the JGroups testing configuration files from our base tests -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-backend-jgroups</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- test -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.shrinkwrap.resolver</groupId>
+            <artifactId>shrinkwrap-resolver-depchain</artifactId>
+            <scope>test</scope>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.arquillian</groupId>
+            <artifactId>wildfly-arquillian-container-managed</artifactId>
+            <version>${arquillianContainerVersion}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss.logmanager</groupId>
+                    <artifactId>jboss-logmanager</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jboss.logmanager</groupId>
+                    <artifactId>log4j-jboss-logmanager</artifactId>
+                </exclusion>
+                <!-- This exclusion is needed to be able to setup the project in Windows:
+                     it otherwise includes transitive dependency to the JDK JConsole -->
+                <exclusion>
+                    <artifactId>wildfly-patching</artifactId>
+                    <groupId>org.wildfly</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.shrinkwrap.descriptors</groupId>
+            <artifactId>shrinkwrap-descriptors-impl-javaee</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <!-- This exclusion is needed to be able to setup the project in Windows:
+                     it otherwise includes transitive dependency to the JDK JConsole -->
+                <exclusion>
+                    <artifactId>wildfly-patching</artifactId>
+                    <groupId>org.wildfly</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.byteman</groupId>
+            <artifactId>byteman</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.spec.javax.ejb</groupId>
+            <artifactId>jboss-ejb-api_3.2_spec</artifactId>
+            <version>1.0.0.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.ejb3</groupId>
+            <artifactId>jboss-ejb3-ext-api</artifactId>
+            <version>2.2.0.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <version>1.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.jms</groupId>
+            <artifactId>jboss-jms-api_2.0_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.transaction</groupId>
+            <artifactId>jboss-transaction-api_1.2_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Avoid warnings during build -->
+        <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging-annotations</artifactId>
+        </dependency>
+
+        <!-- Enable extracting shared test build resources -->
+        <!-- See how maven-dependency-plugin is configured in the parent pom -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-sharedtestresources</artifactId>
+            <classifier>build-resources</classifier>
+            <type>zip</type>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <testResources>
+            <testResource>
+                <filtering>true</filtering>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+        <plugins>
+            <plugin>
+                <!-- Allows to find the absolute path to dependencies -->
+                <groupId>org.bitstrings.maven.plugins</groupId>
+                <artifactId>dependencypath-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>set-all</id>
+                        <goals>
+                            <goal>set</goal>
+                        </goals>
+                        <configuration>
+                        <propertySets>
+                            <propertySet>
+                                <includes>
+                                    <include>org.jboss.byteman:byteman:jar</include>
+                                </includes>
+                            </propertySet>
+                        </propertySets>
+                    </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <!-- Copy the AS configuration files so we can use our custom configurations -->
+                    <execution>
+                        <id>configure-as-node-node1</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${jbossHome.node1}</outputDirectory>
+                            <overwrite>true</overwrite>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/src/wildflyConfig</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>configure-as-node-node2</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${jbossHome.node2}</outputDirectory>
+                            <overwrite>true</overwrite>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/src/wildflyConfig</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.alexcojocaru</groupId>
+                <artifactId>elasticsearch-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <!--
+                With this testing profile, the TS will automatically unzip WildFly distributions obtained via
+                Maven's dependency resolution mechanisms, as opposed to the mode where
+                the user is expected to prepare the distributions beforehand.
+                This is active by default, unless you specify a value for jbossHome.node1.
+            -->
+            <id>unzipWildFly</id>
+            <activation>
+                <property>
+                    <name>!jbossHome.node1</name>
+                </property>
+            </activation>
+            <properties>
+                <jbossHome.node1>${project.build.directory}/node1/wildfly-${wildflyVersion}</jbossHome.node1>
+                <jbossHome.node2>${project.build.directory}/node2/wildfly-${wildflyVersion}</jbossHome.node2>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>unpack-wildfly</id>
+                                <phase>process-test-resources</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.wildfly</groupId>
+                                            <artifactId>wildfly-dist</artifactId>
+                                            <version>${wildflyVersion}</version>
+                                            <type>zip</type>
+                                            <overWrite>true</overWrite>
+                                            <outputDirectory>${project.build.directory}/node1
+                                            </outputDirectory>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>org.wildfly</groupId>
+                                            <artifactId>wildfly-dist</artifactId>
+                                            <version>${wildflyVersion}</version>
+                                            <type>zip</type>
+                                            <overWrite>true</overWrite>
+                                            <outputDirectory>${project.build.directory}/node2
+                                            </outputDirectory>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <!--
+                With this profile, the TS will create Hibernate Search modules by itself, as opposed to testing the
+                modules already included in WildFly distribution (org.hibernate.search.orm:main).
+                This is active by default.
+             -->
+            <id>createModules</id>
+            <activation>
+                <property>
+                    <name>!useBuiltinModules</name>
+                </property>
+            </activation>
+            <properties>
+                <!-- the slot will be inferred at runtime -->
+                <test.hibernate.search.module.slot/>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>unpack-modules</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.hibernate</groupId>
+                                            <artifactId>hibernate-search-modules</artifactId>
+                                            <version>${project.version}</version>
+                                            <classifier>wildfly-11-dist</classifier>
+                                            <type>zip</type>
+                                            <overWrite>true</overWrite>
+                                            <outputDirectory>${jbossHome.node1}/modules</outputDirectory>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>org.hibernate</groupId>
+                                            <artifactId>hibernate-search-modules</artifactId>
+                                            <version>${project.version}</version>
+                                            <classifier>wildfly-11-dist</classifier>
+                                            <type>zip</type>
+                                            <overWrite>true</overWrite>
+                                            <outputDirectory>${jbossHome.node2}/modules</outputDirectory>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>org.hibernate</groupId>
+                                            <artifactId>hibernate-orm-modules</artifactId>
+                                            <version>${hibernateVersion}</version>
+                                            <classifier>wildfly-11-dist</classifier>
+                                            <type>zip</type>
+                                            <overWrite>false</overWrite>
+                                            <outputDirectory>${jbossHome.node1}/modules</outputDirectory>
+                                        </artifactItem>
+                                        <artifactItem>
+                                            <groupId>org.hibernate</groupId>
+                                            <artifactId>hibernate-orm-modules</artifactId>
+                                            <version>${hibernateVersion}</version>
+                                            <classifier>wildfly-11-dist</classifier>
+                                            <type>zip</type>
+                                            <overWrite>false</overWrite>
+                                            <outputDirectory>${jbossHome.node2}/modules</outputDirectory>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+        <!--
+            When using built-in modules, set the correct Hibernate ORM module slot (main).
+         -->
+            <id>useBuiltinModules</id>
+            <activation>
+                <property>
+                    <name>useBuiltinModules</name>
+                </property>
+            </activation>
+            <properties>
+                <hibernate-orm.module.slot>main</hibernate-orm.module.slot>
+            </properties>
+        </profile>
+    </profiles>
+</project>

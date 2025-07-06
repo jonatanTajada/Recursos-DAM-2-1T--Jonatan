@@ -1,0 +1,22 @@
+Tarea 1 - Programación y sincronización de hilos en Java 1
+ FR1: Crea un programa en Java que lance 5 hilos. Cada hilo incrementará una variable
+contador de tipo entero en 1000 unidades. Esta variable estará compartida por todos
+los hilos. Comprueba el resultado final de la variable y reflexiona sobre el resultado.
+¿Se obtiene el resultado esperado? - 3 puntos
+
+	No siempre se obtiene el resultado esperado, ya que la variable contador puede ser modificada de una manera inesperada. Esto se debe porque no esta sincronizado, por lo tanto,
+	varios hilos pueden acceder al mismo tiempo, pueden leer el mismo valor y sobreescribirlo, por eso, no siempre podemos esperar el resultado esperado; esto se
+	llama condicion de carrera.Para que el resultado fuera el esperado se debe de usar la sincronizacion.
+
+
+ FR2: Modifica el programa anterior para sincronizar el acceso a dicha variable. Lanza
+primero los hilos mediante la clase Thread y después mediante el interfaz Runnable.
+Comprueba los resultados e indica las variaciones - 3 puntos
+
+	El resultado es el esperando en ambos ejercicios. La diferencias entre ambos:
+
+	Thread: Permite que la clase misma represente tanto el hilo como la tarea, pero limita la herencia, ya que no existe en Java la herencia multiple.
+
+	Runnable: Es mas recomendado su uso, ya que permite separar la tarea del hilo, permiento a la clase que pueda heredar de otra si es necesario y permite
+		  separar la logica de la tarea en una clase independiente, por lo tanto, facilita la modularizacin y la reutilizacion del codigo.
+		

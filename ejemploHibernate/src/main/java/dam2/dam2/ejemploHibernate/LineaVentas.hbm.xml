@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 9 dic 2024, 10:27:08 by Hibernate Tools 6.5.1.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="tienda" name="dam2.ejemploHibernate.LineaVentas" optimistic-lock="none" table="linea_ventas">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <many-to-one class="dam2.ejemploHibernate.Productos" fetch="select" name="productos">
+            <column name="producto_id"/>
+        </many-to-one>
+        <many-to-one class="dam2.ejemploHibernate.Ventas" fetch="select" name="ventas">
+            <column name="venta_id"/>
+        </many-to-one>
+        <property name="cantidad" type="int">
+            <column name="cantidad" not-null="true"/>
+        </property>
+        <property name="subtotal" type="double">
+            <column name="subtotal" not-null="true" precision="22"/>
+        </property>
+    </class>
+</hibernate-mapping>

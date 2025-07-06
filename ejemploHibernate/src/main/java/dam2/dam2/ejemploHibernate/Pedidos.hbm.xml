@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 9 dic 2024, 10:27:08 by Hibernate Tools 6.5.1.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="tienda" name="dam2.ejemploHibernate.Pedidos" optimistic-lock="none" table="pedidos">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <many-to-one class="dam2.ejemploHibernate.Proveedores" fetch="select" name="proveedores">
+            <column name="proveedor_id"/>
+        </many-to-one>
+        <many-to-one class="dam2.ejemploHibernate.Usuarios" fetch="select" name="usuarios">
+            <column name="id_usuario" not-null="true"/>
+        </many-to-one>
+        <property name="fecha" type="timestamp">
+            <column length="19" name="fecha"/>
+        </property>
+        <property name="total" type="double">
+            <column name="total" not-null="true" precision="22"/>
+        </property>
+        <property name="estado" type="string">
+            <column length="50" name="estado"/>
+        </property>
+    </class>
+</hibernate-mapping>

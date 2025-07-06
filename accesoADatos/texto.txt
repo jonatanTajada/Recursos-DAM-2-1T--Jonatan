@@ -1,0 +1,1 @@
+Hola, este es un ejemplo de escritura y lectura de caracteres en Java.

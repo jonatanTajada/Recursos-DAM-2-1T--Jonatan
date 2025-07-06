@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 9 dic 2024, 10:27:08 by Hibernate Tools 6.5.1.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="tienda" name="dam2.ejemploHibernate.Productos" optimistic-lock="none" table="productos">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <many-to-one class="dam2.ejemploHibernate.Categorias" fetch="select" name="categorias">
+            <column name="categoria_id"/>
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column length="100" name="nombre" not-null="true"/>
+        </property>
+        <property name="stock" type="int">
+            <column name="stock" not-null="true"/>
+        </property>
+        <property name="cantidad" type="java.lang.Integer">
+            <column name="cantidad"/>
+        </property>
+        <property name="precio" type="double">
+            <column name="precio" not-null="true" precision="22"/>
+        </property>
+        <property name="descripcion" type="string">
+            <column length="255" name="descripcion"/>
+        </property>
+        <property name="activo" type="java.lang.Boolean">
+            <column name="activo"/>
+        </property>
+        <set fetch="select" inverse="true" lazy="true" name="lineaVentases" table="linea_ventas">
+            <key>
+                <column name="producto_id"/>
+            </key>
+            <one-to-many class="dam2.ejemploHibernate.LineaVentas"/>
+        </set>
+    </class>
+</hibernate-mapping>

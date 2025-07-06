@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<superheroes>
+
+    <superheroe>
+    
+        <nombre>Iron Man</nombre>
+        <identidad_secreta>Tony Stark</identidad_secreta>
+        <bando>héroe</bando>
+        
+    </superheroe>
+    
+    <superheroe>
+    
+        <nombre>Spider-Man</nombre>
+        <identidad_secreta>Peter Parker</identidad_secreta>
+        <bando>héroe</bando>
+        
+    </superheroe>
+    
+</superheroes>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~ Hibernate Search, full-text search for your domain model
+ ~
+ ~ License: GNU Lesser General Public License (LGPL), version 2.1 or later
+ ~ See the lgpl.txt file in the root directory or <http://www.gnu.org/licenses/lgpl-2.1.html>.
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>hibernate-search-parent</artifactId>
+        <groupId>org.hibernate</groupId>
+        <version>5.8.0.Final</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>hibernate-search-distribution</artifactId>
+
+    <name>Hibernate Search Distribution</name>
+    <description>Builds the distribution bundles</description>
+    <packaging>pom</packaging>
+
+    <properties>
+        <!-- Skip artifact deployment -->
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
+    <dependencies>
+        <!-- The modules to include in the distribution. Any non-optional/provided dependencies will
+                     automatically be included as well -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-engine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-orm</artifactId>
+        </dependency>
+
+        <!-- Making sure the docs get build prior to running the assembly -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-documentation</artifactId>
+            <type>pom</type>
+        </dependency>
+
+        <!-- Need to list out optional/provided dependencies here again in order to include them via assembly dependency set -->
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-parsers</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-serialization-avro</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-elasticsearch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-elasticsearch-aws</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-backend-jms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-backend-jgroups</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.jms</groupId>
+            <artifactId>jboss-jms-api_2.0_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.annotation</groupId>
+            <artifactId>jboss-annotations-api_1.2_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.transaction</groupId>
+            <artifactId>jboss-transaction-api_1.2_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <verbose>false</verbose>
+                    <failOnError>${failOnJavaDocError}</failOnError>
+                    <sourcepath>
+                        ${basedir}/../engine/src/main/java;
+                        ${basedir}/../orm/src/main/java;
+                        ${basedir}/../serialization/avro/src/main/java;
+                        ${basedir}/../backends/jgroups/src/main/java;
+                        ${basedir}/../backends/jms/src/main/java;
+                        ${basedir}/../elasticsearch/src/main/java;
+                        ${basedir}/../elasticsearch-aws/src/main/java;
+                    </sourcepath>
+                    <docfilessubdirs>true</docfilessubdirs>
+                    <stylesheetfile>${basedir}/src/main/javadoc/stylesheet.css</stylesheetfile>
+                    <links>
+                        <link>http://download.oracle.com/javase/8/docs/api/</link>
+                        <link>http://docs.jboss.org/hibernate/orm/5.2/javadocs/</link>
+                        <link>http://lucene.apache.org/core/5_5_4/core/</link>
+                        <link>http://lucene.apache.org/core/5_5_4/analyzers-common/</link>
+                        <link>http://lucene.apache.org/core/5_5_4/queryparser/</link>
+                        <link>http://jgroups.org/javadoc</link>
+                    </links>
+                    <packagesheader>Hibernate Search Packages</packagesheader>
+                    <doctitle>Hibernate Search ${project.version}</doctitle>
+                    <windowtitle>Hibernate Search ${project.version}</windowtitle>
+                    <groups>
+                        <group>
+                            <title>Hibernate Search Engine and ORM Packages</title>
+                            <packages>org.hibernate.search*</packages>
+                        </group>
+                    </groups>
+                    <bottom>
+                        <![CDATA[Copyright &copy; ${project.inceptionYear}-{currentYear} <a href="http://redhat.com">Red Hat, Inc.</a>  All Rights Reserved]]></bottom>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>aggregate-javadoc</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>${basedir}/src/main/assembly/dist.xml</descriptor>
+                    </descriptors>
+                    <finalName>hibernate-search-${project.version}</finalName>
+                    <tarLongFileMode>gnu</tarLongFileMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

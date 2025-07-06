@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>D:\PROGRAMACION\DAM ORDUNA 2024_2025\SegundoAnio\workspaceEclipseSegundoAnioOrduna\gestionDeTareas\MainTareas.jar</jar>
+  <outfile>D:\PROGRAMACION\DAM ORDUNA 2024_2025\SegundoAnio\workspaceEclipseSegundoAnioOrduna\gestionDeTareas\src\MainTareas.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl></downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon>D:\PROGRAMACION\DAM ORDUNA 2024_2025\SegundoAnio\workspaceEclipseSegundoAnioOrduna\gestionDeTareas\java.ico</icon>
+  <jre>
+    <path>%JAVA_HOME%;%PATH%</path>
+    <requiresJdk>false</requiresJdk>
+    <requires64Bit>false</requires64Bit>
+    <minVersion>1.8.0</minVersion>
+    <maxVersion></maxVersion>
+  </jre>
+  <versionInfo>
+    <fileVersion>1.0.0.0</fileVersion>
+    <txtFileVersion>1.0.0.0</txtFileVersion>
+    <fileDescription>Gestor tareas</fileDescription>
+    <copyright>no</copyright>
+    <productVersion>1.0.0.0</productVersion>
+    <txtProductVersion>1.0.0.0</txtProductVersion>
+    <productName>Gestor tareas</productName>
+    <companyName>no</companyName>
+    <internalName>no</internalName>
+    <originalFilename>MainTareas.exe</originalFilename>
+    <trademarks></trademarks>
+    <language>ENGLISH_US</language>
+  </versionInfo>
+</launch4jConfig>

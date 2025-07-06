@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 9 dic 2024, 10:27:08 by Hibernate Tools 6.5.1.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="tienda" name="dam2.ejemploHibernate.Usuarios" optimistic-lock="none" table="usuarios">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <property name="username" type="string">
+            <column length="50" name="username" not-null="true" unique="true"/>
+        </property>
+        <property name="password" type="string">
+            <column length="255" name="password" not-null="true"/>
+        </property>
+        <set fetch="select" inverse="true" lazy="true" name="pedidoses" table="pedidos">
+            <key>
+                <column name="id_usuario" not-null="true"/>
+            </key>
+            <one-to-many class="dam2.ejemploHibernate.Pedidos"/>
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 9 dic 2024, 10:27:08 by Hibernate Tools 6.5.1.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="tienda" name="dam2.ejemploHibernate.Ventas" optimistic-lock="none" table="ventas">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <property name="fecha" type="timestamp">
+            <column length="19" name="fecha"/>
+        </property>
+        <property name="total" type="double">
+            <column name="total" not-null="true" precision="22"/>
+        </property>
+        <set fetch="select" inverse="true" lazy="true" name="lineaVentases" table="linea_ventas">
+            <key>
+                <column name="venta_id"/>
+            </key>
+            <one-to-many class="dam2.ejemploHibernate.LineaVentas"/>
+        </set>
+    </class>
+</hibernate-mapping>

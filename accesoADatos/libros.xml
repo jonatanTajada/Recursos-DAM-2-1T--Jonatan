@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<libreria>
+                
+    
+    
+    <libro categoria="básico" id="1">
+                                
+        
+        
+        <titulo>Java Básico</titulo>
+                                
+        
+        
+        <autor>Juan Pérez</autor>
+                                
+        
+        
+        <precio>32,99</precio>
+                            
+    
+    
+    </libro>
+                
+    
+    
+    <libro categoria="básico" id="2">
+                                
+        
+        
+        <titulo>Java Avanzado</titulo>
+                                
+        
+        
+        <autor>María García</autor>
+                                
+        
+        
+        <precio>43,99</precio>
+                            
+    
+    
+    </libro>
+                
+    
+    
+    <libro categoria="avanzado" id="3">
+                                
+        
+        
+        <titulo>Spring Boot</titulo>
+                                
+        
+        
+        <autor>Ana Fernández</autor>
+                                
+        
+        
+        <precio>54,99</precio>
+                            
+    
+    
+    </libro>
+            
+
+
+</libreria>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<libreria>
+                                            
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <libro id="201">
+                                                                                        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <titulo>Java para principiantes</titulo>
+                                                                                        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <autor>Juan Pérez</autor>
+                                                                                        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <precio>150.99</precio>
+                                                                                    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </libro>
+                                            
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <libro id="102">
+                                                                                        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <titulo>Avanzando con Java</titulo>
+                                                                                        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <autor>María García</autor>
+                                                                                        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <precio>39.99</precio>
+                                                                                    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </libro>
+                                        
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+
+
+</libreria>
